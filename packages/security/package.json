@@ -1,0 +1,24 @@
+{
+  "name": "@betfun/security",
+  "version": "0.1.0",
+  "description": "BetFun Arena Security & Fraud Detection",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "geoip-lite": "^1.4.10",
+    "ua-parser-js": "^1.0.37"
+  },
+  "devDependencies": {
+    "@types/geoip-lite": "^1.4.4",
+    "@types/ua-parser-js": "^0.7.39",
+    "@types/node": "^22.15.3",
+    "tsx": "^4.7.0",
+    "typescript": "5.9.2"
+  }
+}
+

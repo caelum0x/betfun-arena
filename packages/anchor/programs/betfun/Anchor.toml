@@ -1,0 +1,25 @@
+[toolchain]
+
+[features]
+seeds = true
+skip-lint = false
+
+[programs.localnet]
+betfun = "BetFunArenaPredictionMarketGameV1111111111111"
+
+[programs.devnet]
+betfun = "BetFunArenaPredictionMarketGameV1111111111111"
+
+[programs.mainnet]
+betfun = "BetFunArenaPredictionMarketGameV1111111111111"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+

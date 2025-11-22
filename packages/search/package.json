@@ -1,0 +1,21 @@
+{
+  "name": "@betfun/search",
+  "version": "0.1.0",
+  "description": "BetFun Arena Elasticsearch Integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.11.0",
+    "date-fns": "^3.0.6"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^4.7.0",
+    "typescript": "5.9.2"
+  }
+}
+

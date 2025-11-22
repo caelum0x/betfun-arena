@@ -1,0 +1,33 @@
+[toolchain]
+anchor_version = "0.32.1"
+
+[features]
+seeds = true
+skip-lint = false
+
+[programs.localnet]
+betfun = "HrS1KpYRWfg9xUom8jnGqoRAayVCxHxukeb18C4WKAkE"
+
+[programs.devnet]
+betfun = "HrS1KpYRWfg9xUom8jnGqoRAayVCxHxukeb18C4WKAkE"
+
+[programs.mainnet]
+betfun = "HrS1KpYRWfg9xUom8jnGqoRAayVCxHxukeb18C4WKAkE"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[workspace]
+members = ["programs/*"]
+
+[[test.genesis]]
+address = "HrS1KpYRWfg9xUom8jnGqoRAayVCxHxukeb18C4WKAkE"
+program = "programs/betfun/target/deploy/betfun.so"
+

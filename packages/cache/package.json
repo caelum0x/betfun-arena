@@ -1,0 +1,22 @@
+{
+  "name": "@betfun/cache",
+  "version": "0.1.0",
+  "description": "BetFun Arena Redis Caching Layer",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "redis": "^4.6.0",
+    "ioredis": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "5.9.2",
+    "vitest": "^2.0.0"
+  }
+}
+

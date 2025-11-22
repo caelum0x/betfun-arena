@@ -1,0 +1,21 @@
+{
+  "name": "@betfun/compliance",
+  "version": "0.1.0",
+  "description": "BetFun Arena KYC/AML Compliance Integration",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "tsx": "^4.7.0",
+    "typescript": "5.9.2"
+  }
+}
+

@@ -1,0 +1,284 @@
+scalar DateTime
+scalar BigInt
+
+type Query {
+  # Arena queries
+  arena(id: ID!): Arena
+  arenas(filter: ArenaFilter, pagination: PaginationInput): ArenaConnection!
+  trendingArenas(limit: Int = 10): [Arena!]!
+  
+  # User queries
+  user(wallet: String!): User
+  userPositions(wallet: String!): [Position!]!
+  
+  # Leaderboard
+  leaderboard(period: Period!, limit: Int = 100): [LeaderboardEntry!]!
+  
+  # Platform stats
+  platformStats: PlatformStats!
+  
+  # Market data
+  marketDepth(arenaId: ID!): MarketDepth!
+  priceHistory(arenaId: ID!, interval: Interval!, limit: Int = 100): [PricePoint!]!
+}
+
+type Mutation {
+  # These would typically be handled on-chain, but can be prepared here
+  prepareCreateArena(input: CreateArenaInput!): PreparedTransaction!
+  prepareJoinArena(arenaId: ID!, outcome: Int!): PreparedTransaction!
+  prepareResolveArena(arenaId: ID!, winnerOutcome: Int!): PreparedTransaction!
+  prepareClaimWinnings(arenaId: ID!): PreparedTransaction!
+}
+
+type Subscription {
+  # Real-time subscriptions
+  arenaUpdated(arenaId: ID!): Arena!
+  betPlaced(arenaId: ID!): BetEvent!
+  arenaResolved(arenaId: ID!): ResolutionEvent!
+  leaderboardUpdated(period: Period!): [LeaderboardEntry!]!
+  priceUpdated(symbols: [String!]!): PriceUpdate!
+}
+
+# ========== TYPES ==========
+
+type Arena {
+  id: ID!
+  creator: String!
+  title: String!
+  description: String!
+  question: String!
+  outcomes: [String!]!
+  tags: [String!]!
+  entryFee: BigInt!
+  pot: BigInt!
+  participantsCount: Int!
+  outcomeDistribution: [OutcomeStats!]!
+  resolved: Boolean!
+  winnerOutcome: Int
+  endTime: DateTime!
+  createdAt: DateTime!
+  manualResolve: Boolean!
+  tokenMint: String
+  
+  # Computed fields
+  participants(pagination: PaginationInput): [Participant!]!
+  marketDepth: MarketDepth!
+  priceHistory(interval: Interval!): [PricePoint!]!
+  roi: Float!
+  volume24h: BigInt!
+}
+
+type OutcomeStats {
+  outcome: Int!
+  label: String!
+  count: Int!
+  pot: BigInt!
+  percentage: Float!
+  odds: Float!
+}
+
+type Participant {
+  wallet: String!
+  outcomeChosen: Int!
+  amount: BigInt!
+  joinedAt: DateTime!
+  claimed: Boolean!
+  trophyMint: String
+  
+  # Computed
+  potentialPayout: BigInt!
+  roi: Float!
+}
+
+type User {
+  wallet: String!
+  totalWagered: BigInt!
+  totalWon: BigInt!
+  totalLost: BigInt!
+  netProfit: BigInt!
+  winRate: Float!
+  arenaCount: Int!
+  rank: Int
+  
+  # Relations
+  positions: [Position!]!
+  arenas: [Arena!]!
+  createdArenas: [Arena!]!
+}
+
+type Position {
+  arena: Arena!
+  outcome: Int!
+  amount: BigInt!
+  status: PositionStatus!
+  payout: BigInt
+  profit: BigInt
+}
+
+enum PositionStatus {
+  ACTIVE
+  WON
+  LOST
+  CLAIMED
+}
+
+type LeaderboardEntry {
+  rank: Int!
+  user: User!
+  score: BigInt!
+  winRate: Float!
+  arenaCount: Int!
+}
+
+type PlatformStats {
+  totalArenas: Int!
+  activeArenas: Int!
+  totalVolume: BigInt!
+  volume24h: BigInt!
+  totalUsers: Int!
+  activeUsers24h: Int!
+  totalTransactions: Int!
+  averageArenaSize: BigInt!
+}
+
+type MarketDepth {
+  arenaId: ID!
+  outcomes: [OutcomeDepth!]!
+  spread: Float!
+  liquidity: BigInt!
+}
+
+type OutcomeDepth {
+  outcome: Int!
+  bids: [OrderLevel!]!
+  asks: [OrderLevel!]!
+  midPrice: Float!
+}
+
+type OrderLevel {
+  price: Float!
+  volume: BigInt!
+  count: Int!
+}
+
+type PricePoint {
+  timestamp: DateTime!
+  outcome: Int!
+  price: Float!
+  volume: BigInt!
+}
+
+type BetEvent {
+  arenaId: ID!
+  wallet: String!
+  outcome: Int!
+  amount: BigInt!
+  timestamp: DateTime!
+}
+
+type ResolutionEvent {
+  arenaId: ID!
+  winnerOutcome: Int!
+  totalPot: BigInt!
+  winnersCount: Int!
+  timestamp: DateTime!
+}
+
+type PriceUpdate {
+  symbol: String!
+  price: Float!
+  change24h: Float!
+  volume24h: BigInt!
+  timestamp: DateTime!
+}
+
+type PreparedTransaction {
+  transaction: String! # Base64 encoded
+  signers: [String!]!
+  blockhash: String!
+}
+
+# ========== INPUTS ==========
+
+input ArenaFilter {
+  status: ArenaStatus
+  creator: String
+  minPot: BigInt
+  maxPot: BigInt
+  tags: [String!]
+  search: String
+  sortBy: ArenaSortBy
+  sortOrder: SortOrder
+}
+
+enum ArenaStatus {
+  ACTIVE
+  ENDED
+  RESOLVED
+}
+
+enum ArenaSortBy {
+  CREATED_AT
+  END_TIME
+  POT
+  PARTICIPANTS
+  VOLUME
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+input PaginationInput {
+  page: Int = 1
+  limit: Int = 20
+}
+
+type ArenaConnection {
+  edges: [ArenaEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type ArenaEdge {
+  node: Arena!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+input CreateArenaInput {
+  title: String!
+  description: String!
+  question: String!
+  outcomes: [String!]!
+  tags: [String!]
+  entryFee: BigInt!
+  endTime: DateTime!
+  manualResolve: Boolean
+  oracle: String
+  tokenMint: String
+}
+
+enum Period {
+  DAILY
+  WEEKLY
+  MONTHLY
+  ALL_TIME
+}
+
+enum Interval {
+  MINUTE_1
+  MINUTE_5
+  MINUTE_15
+  HOUR_1
+  HOUR_4
+  DAY_1
+}
+

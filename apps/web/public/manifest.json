@@ -1,0 +1,36 @@
+{
+  "name": "BetFun Arena",
+  "short_name": "BetFun",
+  "description": "Prediction Battles on Solana ⚔️",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#A020F0",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "finance", "entertainment"],
+  "shortcuts": [
+    {
+      "name": "Create Arena",
+      "short_name": "Create",
+      "description": "Create a new prediction arena",
+      "url": "/create",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "Leaderboard",
+      "short_name": "Top",
+      "description": "View top warriors",
+      "url": "/leaderboard",
+      "icons": [{ "src": "/logo.svg", "sizes": "96x96" }]
+    }
+  ]
+}
+

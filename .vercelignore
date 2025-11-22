@@ -1,0 +1,11 @@
+node_modules
+.next
+.vercel
+*.log
+.DS_Store
+packages/anchor/target
+packages/anchor/node_modules
+*.md
+!README.md
+!VERCEL_DEPLOYMENT.md
+

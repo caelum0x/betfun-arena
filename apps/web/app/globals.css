@@ -1,50 +1,237 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --electric-purple: 280 88% 53%;
+    --neon-green: 126 100% 59%;
+    --sol-blue: 165 90% 51%;
+    --hot-pink: 328 100% 54%;
+    --blood-red: 348 83% 47%;
+  }
+
+  * {
+    @apply border-gray-700;
+  }
+
+  body {
+    @apply bg-black text-white;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-600;
   }
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+@layer components {
+  /* Wallet button customization */
+  .wallet-adapter-button {
+    @apply bg-electric-purple hover:bg-electric-purple/90 transition-all duration-150;
+    @apply font-bold rounded-lg shadow-glow-purple text-white;
+    @apply h-14 text-lg px-6;
+    min-height: 56px;
+  }
+  
+  /* Wallet modal customization */
+  .wallet-adapter-modal {
+    @apply bg-gray-900 border border-gray-700;
+  }
+  
+  .wallet-adapter-modal-title {
+    @apply text-white;
+  }
+  
+  .wallet-adapter-modal-list {
+    @apply bg-gray-900;
+  }
+  
+  .wallet-adapter-modal-list-item {
+    @apply bg-gray-800 hover:bg-gray-700 border border-gray-700;
+    @apply text-white;
+  }
+  
+  .wallet-adapter-modal-list-item:hover {
+    @apply bg-gray-700;
   }
 
-  .imgLight {
+  .wallet-adapter-button-trigger {
+    @apply bg-electric-purple;
+  }
+
+  /* Glow effects */
+  .glow-purple {
+    @apply shadow-glow-purple;
+  }
+
+  .glow-green {
+    @apply shadow-glow-green;
+  }
+
+  .glow-blue {
+    @apply shadow-glow-blue;
+  }
+
+  /* Animated gradient backgrounds */
+  .gradient-purple {
+    background: radial-gradient(circle at 50% 50%, #A020F0 0%, #000000 70%);
+  }
+
+  .gradient-animate {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Pulse animation */
+  .pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(160, 32, 240, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(160, 32, 240, 0.8);
+    }
+  }
+
+  /* Arena card hover effect */
+  .arena-card {
+    @apply bg-gray-900 border border-gray-700 rounded-md p-4 transition-all duration-200;
+    @apply hover:border-electric-purple hover:shadow-glow-purple;
+  }
+
+  /* Bottom tab bar */
+  .tab-bar {
+    @apply fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-700;
+    @apply flex justify-around items-center h-18 md:h-20;
+    @apply z-50;
+  }
+
+  .tab-item {
+    @apply flex flex-col items-center justify-center gap-1;
+    @apply text-gray-400 hover:text-white transition-colors;
+    @apply cursor-pointer select-none;
+  }
+
+  .tab-item.active {
+    @apply text-electric-purple;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply bg-electric-purple hover:bg-electric-purple/90 text-white;
+    @apply font-bold py-3 px-6 rounded-lg transition-all duration-150;
+    @apply shadow-glow-purple hover:scale-105 active:scale-95;
+  }
+
+  .btn-success {
+    @apply bg-neon-green hover:bg-neon-green/90 text-black;
+    @apply font-bold py-3 px-6 rounded-lg transition-all duration-150;
+    @apply shadow-glow-green hover:scale-105 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply bg-blood-red hover:bg-blood-red/90 text-white;
+    @apply font-bold py-3 px-6 rounded-lg transition-all duration-150;
+    @apply hover:scale-105 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-700 hover:bg-gray-600/20 text-white;
+    @apply font-bold py-3 px-6 rounded-lg transition-all duration-150;
+    @apply border border-gray-400 hover:scale-105 active:scale-95;
+  }
+
+  /* Form inputs */
+  .input-field {
+    @apply bg-gray-900 border border-gray-700 rounded-lg;
+    @apply px-4 py-3 text-white placeholder:text-gray-400;
+    @apply focus:outline-none focus:border-electric-purple focus:shadow-glow-purple;
+    @apply transition-all duration-150;
+  }
+
+  /* Loading spinner */
+  .spinner {
+    @apply animate-spin rounded-full border-2 border-gray-400 border-t-electric-purple;
+  }
+
+  /* Trophy card */
+  .trophy-card {
+    @apply bg-gradient-to-br from-gray-900 to-gray-700;
+    @apply rounded-lg p-4 border-2 border-electric-purple;
+    @apply shadow-glow-purple transform hover:scale-105 transition-transform;
+  }
+
+  /* Confetti container */
+  .confetti-container {
+    @apply fixed inset-0 pointer-events-none z-[9999];
+  }
+}
+
+@layer utilities {
+  /* Text gradients */
+  .text-gradient-purple {
+    @apply bg-gradient-to-r from-electric-purple to-hot-pink bg-clip-text text-transparent;
+  }
+
+  .text-gradient-green {
+    @apply bg-gradient-to-r from-neon-green to-sol-blue bg-clip-text text-transparent;
+  }
+
+  /* Truncate text */
+  .truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .truncate-3-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-  .imgDark {
-    display: unset;
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }

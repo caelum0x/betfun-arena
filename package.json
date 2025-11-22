@@ -1,24 +1,38 @@
 {
   "name": "betfun-arena",
+  "version": "1.0.0",
   "private": true,
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
-  },
-  "devDependencies": {
-    "prettier": "^3.6.2",
-    "turbo": "^2.6.1",
-    "typescript": "5.9.2"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "packageManager": "bun@1.3.1",
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "dev": "bash scripts/kill-ports.sh && concurrently --kill-others --names \"WEB,API,WS,INDEX\" --prefix-colors \"cyan,green,yellow,magenta\" \"npm run dev:web\" \"npm run dev:api\" \"npm run dev:ws\" \"npm run dev:indexer\"",
+    "kill-ports": "bash scripts/kill-ports.sh",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd packages/api && npm run dev",
+    "dev:ws": "cd packages/websocket && npm run dev",
+    "dev:indexer": "cd packages/indexer && npm run dev",
+    "build": "turbo run build",
+    "build:contracts": "cd packages/anchor && anchor build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "setup": "npm install && npm run setup:env",
+    "setup:env": "node scripts/setup-env.js",
+    "start:all": "concurrently \"npm run start:web\" \"npm run start:api\" \"npm run start:ws\" \"npm run start:indexer\"",
+    "start:web": "cd apps/web && npm start",
+    "start:api": "cd packages/api && npm start",
+    "start:ws": "cd packages/websocket && npm start",
+    "start:indexer": "cd packages/indexer && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "turbo": "^1.11.2",
+    "tsx": "^4.7.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
 }
